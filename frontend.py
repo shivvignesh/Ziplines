@@ -1,4 +1,5 @@
 import tkinter as tk
+from app import create_product
 
 LARGE_FONT=("Verdana",20)
 
@@ -17,7 +18,7 @@ class Ziplines(tk.Tk):
 		self.geometry("800x600")
 		self.frames={}
 		#initialization of frames in the dictionary with key as the frame name and object returned as the value
-		for F in (Home,Products,Employees,Add_Orders,Customers):
+		for F in (Home,Products,Employees,Add_Orders,Customers,Add_Products,Add_Customers,Add_Employees):
 			frame=F(parent=container,controller=self)
 			self.frames[F]=frame
 			frame.grid(row=0,column=0,sticky="nsew")
@@ -59,7 +60,7 @@ class Products(tk.Frame):
 
 		tk.Frame.__init__(self,parent)
 		self.controller  = controller
-		button1=tk.Button(self,text="Add Product",command=lambda:controller.show_frame(View_Participants))
+		button1=tk.Button(self,text="Add Product",command=lambda:controller.show_frame(Add_Products))
 		button2=tk.Button(self,text="Delete Product",command=lambda:controller.show_frame(View_Participants))
 		button3=tk.Button(self,text="display",command=lambda:controller.show_frame(View_Participants))
 		button4=tk.Button(self,text="seller info",command=lambda:controller.show_frame(View_Participants))
@@ -81,7 +82,7 @@ class Employees(tk.Frame):
 
 		tk.Frame.__init__(self,parent)
 		self.controller  = controller
-		button1=tk.Button(self,text="Add Employees",command=lambda:controller.show_frame(View_Participants))
+		button1=tk.Button(self,text="Add Employees",command=lambda:controller.show_frame(Add_Employees))
 		button2=tk.Button(self,text="Delete Employees",command=lambda:controller.show_frame(View_Participants))
 		button3=tk.Button(self,text="Employee Details",command=lambda:controller.show_frame(View_Participants))
 		
@@ -142,7 +143,7 @@ class Customers(tk.Frame):
 
 		tk.Frame.__init__(self,parent)
 		self.controller  = controller
-		button1=tk.Button(self,text="Add Customers",command=lambda:controller.show_frame(View_Participants))
+		button1=tk.Button(self,text="Add Customers",command=lambda:controller.show_frame(Add_Customers))
 		button2=tk.Button(self,text="Delete Customers",command=lambda:controller.show_frame(View_Participants))
 		button3=tk.Button(self,text="Customers Info",command=lambda:controller.show_frame(View_Participants))
 		
@@ -153,8 +154,110 @@ class Customers(tk.Frame):
 		button2.grid(row = 2,column =5,padx=20, pady =20 )
 		button3.grid(row = 3,column =5,padx=20, pady =20 )
 		
+class Add_Products(tk.Frame):
+
+	def __init__(self,parent,controller):
 
 
+		tk.Frame.__init__(self,parent)
+		self.controller=controller
+
+		self.name_label=tk.Label(self,text="Name of Product")
+		self.price_label=tk.Label(self,text="Price of Product")
+		self.seller_name_label=tk.Label(self,text="Name of seller")
+		
+		self.product_name=tk.Text(self,height=2,width=30)
+		self.product_price=tk.Text(self,height=2,width=30)
+		self.seller_name=tk.Text(self,height=2,width=30)
+		
+		self.name_label.grid(row=3,column=1,padx=10,pady=10)
+		self.price_label.grid(row=4,column=1,padx=10,pady=10)
+		self.seller_name_label.grid(row=5,column=1,padx=10,pady=10)
+
+		self.product_name.grid(row=3,column=2,padx=10,pady=10)
+		self.product_price.grid(row=4,column=2,padx=10,pady=10)
+		self.seller_name.grid(row=5,column=2,padx=10,pady=10)
+	
+		self.back_button=tk.Button(self,text="Back",command=lambda:controller.show_frame(Products))
+		self.back_button.grid(row=2,column=3,padx=20,pady=20)
+
+		self.submit_button=tk.Button(self,text="Submit",command=self.add_product)
+		self.submit_button.grid(row=3,column=3,padx=20,pady=20)
+
+	def add_product(self):
+		self.pname=self.product_name.get("1.0","end-1c")
+		self.pprice=self.product_price.get("1.0","end-1c")
+		self.sname=self.seller_name.get("1.0","end-1c")
+
+		self.product_name.delete("1.0","end")
+		self.product_price.delete("1.0","end")
+		self.seller_name.delete("1.0","end")
+
+		create_product(self.pname,self.pprice,self.sname)
+
+
+
+class Add_Customers(tk.Frame):
+
+	def __init__(self,parent,controller):
+
+
+		tk.Frame.__init__(self,parent)
+		self.controller=controller
+
+		self.cust_name_label=tk.Label(self,text="Name of customer")
+		self.cust_phno_label=tk.Label(self,text="Phone Number")
+		self.cust_address_label=tk.Label(self,text="Address")
+		
+		self.cust_name=tk.Text(self,height=2,width=30)
+		self.cust_phno=tk.Text(self,height=2,width=30)
+		self.cust_address=tk.Text(self,height=10,width=30)
+		
+		self.cust_name_label.grid(row=3,column=1,padx=10,pady=10)
+		self.cust_phno_label.grid(row=4,column=1,padx=10,pady=10)
+		self.cust_address_label.grid(row=5,column=1,padx=10,pady=10)
+
+		self.cust_name.grid(row=3,column=2,padx=10,pady=10)
+		self.cust_phno.grid(row=4,column=2,padx=10,pady=10)
+		self.cust_address.grid(row=5,column=2,padx=10,pady=10)
+	
+		self.back_button=tk.Button(self,text="Back",command=lambda:controller.show_frame(Customers))
+		self.back_button.grid(row=2,column=3,padx=20,pady=20) 		
+
+class Add_Employees(tk.Frame):
+	
+	def __init__(self,parent,controller):
+
+
+		tk.Frame.__init__(self,parent)
+		self.controller=controller
+
+		self.emp_name_label=tk.Label(self,text="Name of Employee")
+		self.emp_salary_label=tk.Label(self,text="Employee salary")
+		self.emp_dob_label=tk.Label(self,text="Employee Date of Birth")
+		self.emp_gender_label=tk.Label(self,text="Gender")
+		self.emp_phno_label=tk.Label(self,text="Phone Number")
+		
+		self.emp_name=tk.Text(self,height=2,width=30)
+		self.emp_salary=tk.Text(self,height=2,width=30)
+		self.emp_dob=tk.Text(self,height=2,width=30)
+		self.emp_gender=tk.Text(self,height=2,width=30)
+		self.emp_phno=tk.Text(self,height=2,width=30)
+		
+		self.emp_name_label.grid(row=3,column=1,padx=10,pady=10)
+		self.emp_salary_label.grid(row=4,column=1,padx=10,pady=10)
+		self.emp_dob_label.grid(row=5,column=1,padx=10,pady=10)
+		self.emp_gender_label.grid(row=6,column=1,padx=10,pady=10)
+		self.emp_phno_label.grid(row=7,column=1,padx=10,pady=10)
+
+		self.emp_name.grid(row=3,column=2,padx=10,pady=10)
+		self.emp_salary.grid(row=4,column=2,padx=10,pady=10)
+		self.emp_dob.grid(row=5,column=2,padx=10,pady=10)
+		self.emp_gender.grid(row=6,column=2,padx=10,pady=10)
+		self.emp_phno.grid(row=7,column=2,padx=10,pady=10)
+	
+		self.back_button=tk.Button(self,text="Back",command=lambda:controller.show_frame(Employees))
+		self.back_button.grid(row=2,column=3,padx=20,pady=20)	
 
 app=Ziplines()
 app.mainloop()
