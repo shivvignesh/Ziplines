@@ -12,10 +12,32 @@ class Product(Base):
 
 	product_id=Column(Integer,primary_key=True)
 	product_name=Column(String(30),nullable=False)
-	seller_name=Column(String(30),nullable=False)
+	seller_name=Column(String(30),ForeignKey('Sellers.seller_name'),nullable=False)
 	product_price=Column(Integer,nullable=False)
 
+class Employee(Base):
+	__tablename__='Employees'
 
+	employee_id = Column(Integer,primary_key=True)
+	employee_name = Column(String(1),nullable=False)
+	employee_gender = Column(String(30),nullable=False)
+	employee_dob = Column(String(10),nullable=False)
+	employee_salary = Column(Integer,nullable=False)
+	employee_phno = Column(Integer,nullable=False)
+
+class Customer(Base):
+	__tablename__ = 'Customers'
+
+	customer_id = Column(Integer,primary_key=True)
+	customer_name = Column(String(30),nullable=False)
+	customer_phno = Column(Integer,nullable=False)
+	customer_address = Column(String(100),nullable=False)
+
+class Seller(Base):
+	__tablename__='Sellers'
+
+	seller_id=Column(Integer,primary_key=True)
+	seller_name=Column(String(30),nullable=False)
 
 
 engine = create_engine("sqlite:///ziplines.db")
